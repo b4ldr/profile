@@ -1,0 +1,12 @@
+[submodule ".vim/bundle/puppet-syntax-vim"]
+	path = .vim/bundle/puppet-syntax-vim
+	url = https://github.com/puppetlabs/puppet-syntax-vim
+[submodule ".vim/bundle/syntastic"]
+	path = .vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule ".vim/bundle/vim-airline"]
+	path = .vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline
+[submodule ".vim/bundle/vim-jinja"]
+	path = .vim/bundle/vim-jinja
+	url = https://github.com/mitsuhiko/vim-jinja
