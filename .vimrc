@@ -2,24 +2,25 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'git://github.com/VundleVim/Vundle.vim'
-"local
+"local using install will break this
 "Plugin 'git://github.com/b4ldr/YouCompleteMe'
-"Plugin 'git://github.com/b4ldr/moonlight.vim'
+Plugin 'YouCompleteMe'
+Plugin 'vim-medic_chalk'
+Plugin 'moonlight.vim'
 call vundle#end()
 filetype plugin indent on
 syntax on
 set mouse-=a
 "color ron
-colorscheme moonlight
+colorscheme medic_chalk
+"colorscheme moonlight
+"colorscheme xcodedark
+"colorscheme xcodedarkhc
+"colorscheme xcodelight
+"colorscheme xcodelighthc
+"colorscheme xcodewwdc
 set nu
 setlocal spell spelllang=en_gb
-hi clear SpellBad
-hi clear SpellLocal
-hi SpellBad cterm=underline ctermfg=red
-hi SpellLocal cterm=underline ctermfg=DarkMagenta
-hi SpellRare cterm=underline ctermfg=Magenta
-set spellcapcheck=''
-"set nospell
 au BufRead,BufNewFile *.nse set ft=lua
 au BufRead,BufNewFile *.cf set ft=cf3
 au BufRead,BufNewFile *.j2 set ft=jinja
@@ -64,28 +65,27 @@ set smartindent
 set smarttab
 set viminfo='20,\"80,c
 hi PreProc ctermfg=Green
-hi Normal guibg=grey95
-if &term =~ "xteam.*"
-    let &t_ti = &t_ti . "\e[?2004h"
-    let &t_te = "\e[?2004l" . &t_te
-    function XTermPasteBegin(ret)
-        set pastetoggle=<Esc>[201~
-        set paste
-        return a:ret
-    endfunction
-    map <expr> <Esc>[200~ XTermPasteBegin("i")
-    imap <expr> <Esc>[200~ XTermPasteBegin("")
-    cmap <Esc>[200~ <Nop>
-    cmap <Esc>[201~ <Nop>
-endif
+"if &term =~ "xteam.*"
+"    let &t_ti = &t_ti . "\e[?2004h"
+"    let &t_te = "\e[?2004l" . &t_te
+"    function XTermPasteBegin(ret)
+"        set pastetoggle=<Esc>[201~
+"        set paste
+"        return a:ret
+"    endfunction
+"    map <expr> <Esc>[200~ XTermPasteBegin("i")
+"    imap <expr> <Esc>[200~ XTermPasteBegin("")
+"    cmap <Esc>[200~ <Nop>
+"    cmap <Esc>[201~ <Nop>
+"endif
 
-function! CleverTab()
-    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-  return "\<Tab>"
-    else
-	return "\<C-N>"
-endfunction
-inoremap <Tab> <C-R>=CleverTab()<CR>
+"function! CleverTab()
+"    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+"  return "\<Tab>"
+"    else
+"	return "\<C-N>"
+"endfunction
+"inoremap <Tab> <C-R>=CleverTab()<CR>
 
 function Py2()
   let g:syntastic_python_pylint_exe = '/usr/bin/pylint'
