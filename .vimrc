@@ -1,19 +1,34 @@
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'git://github.com/VundleVim/Vundle.vim'
+"local
+"Plugin 'git://github.com/b4ldr/YouCompleteMe'
+"Plugin 'git://github.com/b4ldr/moonlight.vim'
+call vundle#end()
+filetype plugin indent on
 syntax on
-color ron
+set mouse-=a
+"color ron
+colorscheme moonlight
 set nu
 setlocal spell spelllang=en_gb
+hi clear SpellBad
+hi clear SpellLocal
+hi SpellBad cterm=underline ctermfg=red
+hi SpellLocal cterm=underline ctermfg=DarkMagenta
+hi SpellRare cterm=underline ctermfg=Magenta
 set spellcapcheck=''
-set nospell
+"set nospell
 au BufRead,BufNewFile *.nse set ft=lua
 au BufRead,BufNewFile *.cf set ft=cf3
 au BufRead,BufNewFile *.j2 set ft=jinja
 call pathogen#infect()
-"
-
 set shiftwidth=2
 set softtabstop=2
 set tabstop=4
-au Filetype python setl et ts=8 sw=4 softtabstop=4
+au Filetype python setl et ts=4 sw=4 softtabstop=4
+au Filetype puppet setl et ts=2 sw=2 softtabstop=2
 set shortmess-=tT
 set autoindent
 "set autowrite
@@ -38,7 +53,6 @@ set incsearch
 set laststatus=2
 set modeline
 set modelines=5
-"set mouse=a
 "set mp=gmake
 set nocompatible
 "set runtimepath=$DEV/vim,$VIMRUNTIME
@@ -49,7 +63,6 @@ set showmatch
 set smartindent
 set smarttab
 set viminfo='20,\"80,c
-filetype plugin indent on
 hi PreProc ctermfg=Green
 hi Normal guibg=grey95
 if &term =~ "xteam.*"
@@ -74,3 +87,18 @@ function! CleverTab()
 endfunction
 inoremap <Tab> <C-R>=CleverTab()<CR>
 
+function Py2()
+  let g:syntastic_python_pylint_exe = '/usr/bin/pylint'
+  unlet g:syntastic_python_python_exe
+  unlet g:syntastic_python_python_args
+endfunction
+
+function Py3()
+  let g:syntastic_python_pylint_exe = '/usr/bin/pylint3'
+  let g:syntastic_python_python_exe = '/usr/bin/python3'
+  let g:syntastic_python_python_args = '-m py_compile'
+endfunction
+
+call Py3()
+highlight RedundantSpaces ctermbg=red guibg=red
+match RedundantSpaces /\s\+$/
