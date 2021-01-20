@@ -1,13 +1,14 @@
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'git://github.com/VundleVim/Vundle.vim'
-"local using install will break this
-"Plugin 'git://github.com/b4ldr/YouCompleteMe'
-Plugin 'YouCompleteMe'
-Plugin 'vim-medic_chalk'
-Plugin 'moonlight.vim'
-call vundle#end()
+"https://github.com/junegunn/vim-plug
+call plug#begin()
+Plug 'VundleVim/Vundle.vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'vim-airline/vim-airline'
+Plug 'jamessan/vim-gnupg'
+Plug 'rodjek/vim-puppet'
+Plug 'b4ldr/YouCompleteMe', { 'branch': 'vim8.1.0-support' }
+Plug '~/git/vim-medic_chalk'
+call plug#end()
 filetype plugin indent on
 syntax on
 set mouse-=a
