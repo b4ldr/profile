@@ -104,4 +104,4 @@ match RedundantSpaces /\s\+$/
 "autocmd BufWritePre *.py execute ':Black'
 nnoremap <F9> :Black<CR>
 autocmd BufRead */git/puppet/**/*.pp set sw=4 ts=4 et
-
+autocmd BufNewFile */git/puppet/**/*.pp set sw=4 ts=4 et
