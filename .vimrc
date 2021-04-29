@@ -1,36 +1,38 @@
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=4
 filetype off
 "https://github.com/junegunn/vim-plug
 call plug#begin()
-Plug 'VundleVim/Vundle.vim'
+" https://github.com/psf/black/pull/1545/files applied manually
+Plug 'psf/black', { 'branch': 'stable' }
+Plug 'guns/xterm-color-table.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'vim-airline/vim-airline'
 Plug 'jamessan/vim-gnupg'
 Plug 'rodjek/vim-puppet'
+Plug 'fatih/vim-go'
 Plug 'b4ldr/YouCompleteMe', { 'branch': 'vim8.1.0-support' }
 Plug '~/git/vim-medic_chalk'
+Plug 'Glench/Vim-Jinja2-Syntax'
 call plug#end()
+"https://github.com/psf/black/issues/1307
+let g:black_skip_string_normalization = 1
+let g:syntastic_loc_list_height = 3
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+set completeopt-=preview
 filetype plugin indent on
 syntax on
 set mouse-=a
 "color ron
 colorscheme medic_chalk
-"colorscheme moonlight
-"colorscheme xcodedark
-"colorscheme xcodedarkhc
-"colorscheme xcodelight
-"colorscheme xcodelighthc
-"colorscheme xcodewwdc
 set nu
 setlocal spell spelllang=en_gb
 au BufRead,BufNewFile *.nse set ft=lua
 au BufRead,BufNewFile *.cf set ft=cf3
 au BufRead,BufNewFile *.j2 set ft=jinja
-call pathogen#infect()
-set shiftwidth=2
-set softtabstop=2
-set tabstop=4
-au Filetype python setl et ts=4 sw=4 softtabstop=4
-au Filetype puppet setl et ts=2 sw=2 softtabstop=2
 set shortmess-=tT
 set autoindent
 "set autowrite
@@ -41,7 +43,6 @@ set cinoptions=f0,{0,t0,(0,u0,w1,W1s,)60,*60
 set cpo&vim
 set diffopt+=icase,iwhite,filler
 set encoding=utf8
-set expandtab
 set fileencoding=utf8
 "set fileencodings=ucs-bom,utf-8,default
 set foldmethod=syntax
@@ -94,12 +95,13 @@ function Py2()
   unlet g:syntastic_python_python_args
 endfunction
 
-function Py3()
-  let g:syntastic_python_pylint_exe = '/usr/bin/pylint3'
-  let g:syntastic_python_python_exe = '/usr/bin/python3'
-  let g:syntastic_python_python_args = '-m py_compile'
-endfunction
+let g:syntastic_python_pylint_exe = '/home/jbond/.local/bin//pylint'
+let g:syntastic_python_python_exe = '/usr/bin/python3'
+let g:syntastic_python_python_args = '-m py_compile'
 
-call Py3()
 highlight RedundantSpaces ctermbg=red guibg=red
 match RedundantSpaces /\s\+$/
+"autocmd BufWritePre *.py execute ':Black'
+nnoremap <F9> :Black<CR>
+autocmd BufRead */git/puppet/**/*.pp set sw=4 ts=4 et
+
