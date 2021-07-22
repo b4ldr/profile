@@ -3,9 +3,11 @@ export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH:${HOME}/.local/bin/
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/jbond/.oh-my-zsh
-# fuck knows wht ssh agent is fucking up
+# Set the default agent to the one created by kde, wmf agent is set in config
 export SSH_AGENT_PID=$(/usr/bin/pidof -x /usr/bin/startkde)
 export SSH_AUTH_SOCK=$(ls /tmp/ssh-*/agent.${SSH_AGENT_PID})
+systemctl start --user ssh-agent@prod
+systemctl start --user ssh-agent@cloud
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -14,7 +16,9 @@ export SSH_AUTH_SOCK=$(ls /tmp/ssh-*/agent.${SSH_AGENT_PID})
 #ZSH_THEME="gallois"
 #ZSH_THEME="mh"
 #ZSH_THEME="wedisagree"
-ZSH_THEME="nanotech"
+#ZSH_THEME="nanotech"
+#ZSH_THEME="mortalscumbag"
+ZSH_THEME="b4ldr"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -58,11 +62,10 @@ ZSH_THEME="nanotech"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git catimg encode64 gem jsontools pass python rvm debian pip python sudo vagrant rbenv ssh-agent docker)
-hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts <$HOME/.ssh/known_hosts.d/wmf-prod <$HOME/.ssh/known_hosts.d/wmf-cloud)"}:#[0-9]*}%%\ *}%%,*})
-zstyle ':completion:*:hosts' hosts $hosts
-zstyle :omz:plugins:ssh-agent agent-forwarding on
-zstyle :omz:plugins:ssh-agent identities id_rsa id_ed25519_production
+plugins=(git catimg encode64 gem jsontools pass python rvm debian pip python sudo vagrant rbenv docker docker-compose linus-rants)
+zstyle ':completion:*:hosts' known-hosts-files /home/jbond/.ssh/known_hosts /home/jbond/.ssh/known_hosts.d/wmf-cloud /home/jbond/.ssh/known_hosts.d/wmf-prod
+# zstyle :omz:plugins:ssh-agent agent-forwarding on
+#zstyle :omz:plugins:ssh-agent identities id_rsa id_ed25519_production
 
 source $ZSH/oh-my-zsh.sh
 
@@ -93,6 +96,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias debcompare="${HOME}/git/debcompare/venv/bin/python -m debcompare.compare"
+alias puppet-merge='ssh -t puppetmaster1001.eqiad.wmnet sudo -i puppet-merge'
+alias pc='pass -c'
 alias oneline="awk '{printf "'"'"%s "'"'",\$1}'"
 alias spwgen='pwgen -sy 20 1'
 alias pp='git pull -r'
@@ -102,7 +108,7 @@ alias blint='bundle exec rake validate lint'
 alias brubo='bundle exec rake rubocop'
 alias bbeaker='BEAKER_set="docker/ubuntu-14.04" bundle exec rake beaker'
 alias bstrings='bundler exec puppet strings generate --format markdown'
-alias binstall='bundle install --path=${BUNDLE_PATH:-vendor/bundle}'
+alias binstall='bundle install --path=${BUNDLE_PATH:-.bundle/vendor}'
 alias add-ssh='ssh-add ~/.ssh/id_ed25519_production ~/.ssh/id_rsa; SSH_AUTH_SOCK=/run/user/1000/ssh-cloud.socket ssh-add ~/.ssh/id_ed25519'
 
 alias colourify="/usr/bin/grc -es --colour=auto"
@@ -122,16 +128,16 @@ alias tail='colourify tail'
 alias dig='colourify dig'
 alias mount='colourify mount'
 alias ps='colourify ps'
-alias mtr='colourify mtr'
+alias mtr='colourify mtr --aslookup -t'
 alias df='colourify df'
 #alias docker='sudo docker'
+alias sre-pad='echo https://etherpad.wikimedia.org/p/SRE-Foundations-$(date -I -dMonday)'
+alias clipboard='xclip -selection c'
+alias gpg-market='gpg  --no-default-keyring --keyring  darknet/trustedkeys.gpg'
+alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+alias cumin="ssh cumin1001.eqiad.wmnet sudo cumin"
+alias ip="ip -c"
 
-export PAGER=less
-export EDITOR=vim
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export ANSIBLE_NOCOWS=1
-export ANSIBLE_SSH_PIPLINEING=1
 
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
@@ -160,7 +166,10 @@ function rdns {
   printf '%s\tIN\tPTR\t%s\n' ${question%"${authority}"} $host
 }
 function docker-debian {
-  docker run -it debian:${1} /bin/bash 
+  docker run --rm -it debian:${1} /bin/bash
+}
+function docker-wmf {
+  docker run --rm -it --user root --entrypoint bash "docker-registry.wikimedia.org/${1}:${2:-latest}"
 }
 function docker-killall {
   for i in $(docker ps --all | tail +2 | awk '{print $1}')
@@ -168,6 +177,11 @@ function docker-killall {
     docker stop ${i} || docker kill ${i}
     docker rm ${i}
   done
+}
+function pcc {
+  cd ${HOME}/git/puppet
+  ./utils/pcc.py last parse_commit
+  cd -
 }
 function docker-bash {
   # Fuck knows how this works, zsh voodoo
@@ -211,3 +225,5 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 # added by travis gem
 [ -f /home/jbond/.travis/travis.sh ] && source /home/jbond/.travis/travis.sh
+ fpath=(~/.zsh/completion $fpath)
+
