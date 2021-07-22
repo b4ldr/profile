@@ -13,8 +13,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'jamessan/vim-gnupg'
 Plug 'rodjek/vim-puppet'
 Plug 'fatih/vim-go'
-Plug 'b4ldr/YouCompleteMe', { 'branch': 'vim8.1.0-support' }
-Plug '~/git/vim-medic_chalk'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'b4ldr/vim-medic_chalk'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'Glench/Vim-Jinja2-Syntax'
 call plug#end()
 "https://github.com/psf/black/issues/1307
@@ -22,12 +23,14 @@ let g:black_skip_string_normalization = 1
 let g:syntastic_loc_list_height = 3
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+set background=dark
 set completeopt-=preview
 filetype plugin indent on
 syntax on
 set mouse-=a
 "color ron
-colorscheme medic_chalk
+"colorscheme medic_chalk
+colorscheme PaperColor
 set nu
 setlocal spell spelllang=en_gb
 au BufRead,BufNewFile *.nse set ft=lua
