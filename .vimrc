@@ -22,6 +22,7 @@ let g:black_skip_string_normalization = 1
 let g:syntastic_loc_list_height = 3
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_pylint_post_args="--rcfile=~/.vim/config/.pylint"
 set completeopt-=preview
 filetype plugin indent on
 syntax on
@@ -89,15 +90,10 @@ hi PreProc ctermfg=Green
 "endfunction
 "inoremap <Tab> <C-R>=CleverTab()<CR>
 
-function Py2()
-  let g:syntastic_python_pylint_exe = '/usr/bin/pylint'
-  unlet g:syntastic_python_python_exe
-  unlet g:syntastic_python_python_args
-endfunction
-
-let g:syntastic_python_pylint_exe = '/home/jbond/.local/bin//pylint'
+let g:syntastic_python_pylint_exe = '/usr/bin/pylint'
 let g:syntastic_python_python_exe = '/usr/bin/python3'
 let g:syntastic_python_python_args = '-m py_compile'
+let g:syntastic_python_checkers = ['pylint', 'flake8', 'python']
 
 highlight RedundantSpaces ctermbg=red guibg=red
 match RedundantSpaces /\s\+$/
