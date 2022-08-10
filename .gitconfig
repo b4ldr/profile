@@ -1,0 +1,23 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = jbond
+	email = github@johnbond.org
+	signingkey = F0603A8AA1A3C834EF802F768B4182B1196B2D27
+[pull]
+	rebase = false
+[core]
+	excludesfile = /home/jbond/.gitignore
+[commit]
+	gpgsign = true
+[url "https://gerrit.wikimedia.org/r/"]
+	insteadOf = ssh://jbond@gerrit.wikimedia.org:29418/
+	insteadOf = ssh://gerrit.wikimedia.org:29418/
+[url "ssh://jbond@gerrit.wikimedia.org:29418/"]
+	pushInsteadOf = https://gerrit.wikimedia.org/r/
+# This looks mysterious, but is what stops a cloned-via-SSH repo
+# from being rewritten to HTTPS for push.
+[url "ssh://jbond@gerrit.wikimedia.org:29418/"]
+	pushInsteadOf = ssh://jbond@gerrit.wikimedia.org:29418/
+[url "ssh://gerrit.wikimedia.org:29418/"]
+	pushInsteadOf = ssh://gerrit.wikimedia.org:29418/
