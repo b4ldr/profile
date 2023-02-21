@@ -10,14 +10,7 @@
 	excludesfile = /home/jbond/.gitignore
 [commit]
 	gpgsign = true
-[url "https://gerrit.wikimedia.org/r/"]
-	insteadOf = ssh://jbond@gerrit.wikimedia.org:29418/
-	insteadOf = ssh://gerrit.wikimedia.org:29418/
-[url "ssh://jbond@gerrit.wikimedia.org:29418/"]
-	pushInsteadOf = https://gerrit.wikimedia.org/r/
-# This looks mysterious, but is what stops a cloned-via-SSH repo
-# from being rewritten to HTTPS for push.
-[url "ssh://jbond@gerrit.wikimedia.org:29418/"]
-	pushInsteadOf = ssh://jbond@gerrit.wikimedia.org:29418/
-[url "ssh://gerrit.wikimedia.org:29418/"]
-	pushInsteadOf = ssh://gerrit.wikimedia.org:29418/
+[alias]
+    llog = log --graph --pretty=format:\"%C(auto)%h%d%Creset %C(cyan)(%cr)%Creset %C(green)%cn <%ce>%Creset %s\" --all
+    grephist = log --graph --pretty=format:\"%C(auto)%h%d%Creset %C(cyan)(%cr)%Creset %C(green)%cn <%ce>%Creset %s\" --all -S
+
