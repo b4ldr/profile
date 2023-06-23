@@ -18,6 +18,7 @@ Plug 'b4ldr/vim-medic_chalk'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'rust-lang/rust.vim'
+Plug 'mrk21/yaml-vim'
 call plug#end()
 "https://github.com/psf/black/issues/1307
 let g:vimspector_enable_mappings = 'HUMAN'
@@ -26,7 +27,7 @@ let g:black_skip_string_normalization = 1
 let g:syntastic_loc_list_height = 3
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-cl', 'coc-go', 'coc-solargraph', 'coc-python', 'coc-java', 'coc-html', 'coc-json', 'coc-markdownlint', 'coc-perl', 'coc-jedi', 'coc-rust-analyzer']
+let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-cl', 'coc-go', 'coc-solargraph', 'coc-python', 'coc-html', 'coc-json', 'coc-markdownlint', 'coc-perl', 'coc-jedi', 'coc-rust-analyzer']
 set background=dark
 set completeopt-=preview
 filetype plugin indent on

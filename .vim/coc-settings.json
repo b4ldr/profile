@@ -1,0 +1,11 @@
+{
+  "languageserver": {
+    "puppet": {
+      "command": "ruby",
+      "args": ["/home/jbond/git/puppet-editor-services/puppet-languageserver","--stdio","--puppet-settings=--moduledir,/home/jbond/git/puppet/core_modules"],
+      "cwd": "/home/jbond/git/puppet-editor-services",
+      "filetypes": ["puppet"],
+      "rootPatterns": [".git/", "metadata.json"]
+    }
+  }
+}
