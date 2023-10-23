@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH:${HOME}/.local/bin/:${HOME}/.local/share/gem/ruby/2.7.0/bin/:$HOME/.rbenv/bin:/usr/local/go/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH:${HOME}/.local/bin/:${HOME}/.local/share/gem/ruby/3.1.0/bin/:/usr/local/go/bin
 HISTSIZE='128000'
 SAVEHIST='128000'
 HISTFILE=~/.zsh_history
@@ -209,10 +209,10 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 # added by travis gem
 [ -f /home/jbond/.travis/travis.sh ] && source /home/jbond/.travis/travis.sh
  fpath=(~/.zsh/completion $fpath)
-eval "$(rbenv init -)"
+#eval "$(rbenv init -)"
 source ~/git/powerlevel10k/powerlevel10k.zsh-theme
 #source ~/.config/b4ldr.zsh-theme
-# dcl completion $(basename $SHELL)
-
+source <(rtx activate zsh)
+source <(dcl completion zsh)
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.zsh/p10k.zsh ]] || source ~/.zsh/p10k.zsh

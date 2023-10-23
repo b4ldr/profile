@@ -11,3 +11,4 @@ export DEBFULLNAME="John Bond"
 export WMF_PYTHON_RELEASES=/home/jbond/release/python
 export GPG_TTY=$(/usr/bin/tty)
 . "$HOME/.cargo/env"
+. "$HOME/.zshenv_private"
