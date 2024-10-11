@@ -19,11 +19,11 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'rust-lang/rust.vim'
 Plug 'mrk21/yaml-vim'
+Plug 'jvirtanen/vim-hcl'
 call plug#end()
 "https://github.com/psf/black/issues/1307
 let g:vimspector_enable_mappings = 'HUMAN'
 let g:go_debug=['shell-commands']
-let g:black_skip_string_normalization = 1
 let g:syntastic_loc_list_height = 3
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
@@ -76,7 +76,10 @@ set smarttab
 set viminfo='20,\"80,c
 hi PreProc ctermfg=Green
 
-let g:syntastic_python_pylint_exe = '/home/jbond/.local/bin//pylint'
+"let g:syntastic_python_pylint_exe = '/home/jbond/.local/bin//pylint'
+let g:syntastic_python_pylint_exe = '/Users/john.bond/Library/Python/3.9/bin/pylint'
+let g:syntastic_python_pylint_args = '--rcfile=/Users/john.bond/.config/pylintrc'
+let g:syntastic_python_pylint_post_args = '--rcfile=/Users/john.bond/.config/pylintrc'
 let g:syntastic_python_python_exe = '/usr/bin/python3'
 let g:syntastic_python_python_args = '-m py_compile'
 
