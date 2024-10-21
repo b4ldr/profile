@@ -5,7 +5,7 @@
 	email = github@johnbond.org
 	signingkey = F0603A8AA1A3C834EF802F768B4182B1196B2D27
 [pull]
-	rebase = false
+	rebase = true
 [core]
 	excludesfile = ~/.gitignore
 [commit]
@@ -13,6 +13,12 @@
 [alias]
     llog = log --graph --pretty=format:\"%C(auto)%h%d%Creset %C(cyan)(%cr)%Creset %C(green)%cn <%ce>%Creset %s\" --all
     grephist = log --graph --pretty=format:\"%C(auto)%h%d%Creset %C(cyan)(%cr)%Creset %C(green)%cn <%ce>%Creset %s\" --all -S
+	fpush = push --force-with-lease
+    fp = fpush
 
 [rebase]
 	updateRefs = true
+[branch]
+	sort = -committerdate
+[column]
+	ui = auto
