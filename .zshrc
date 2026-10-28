@@ -8,7 +8,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH:${HOME}/.local/bin/:/usr/local/go/bin:${HOME}/Library/Python/3.12/bin:${HOME}/.gem/ruby/2.7.0/bin:/usr/local/opt/binutils/bin:/opt/puppetlabs/pdk/bin
+export PATH=/opt/homebrew/sbin:/sbin:/usr/sbin:/opt/homebrew/bin:$PATH:${HOME}/.local/bin/:/opt/homebrew/go/bin:${HOME}/Library/Python/3.12/bin:/opt/homebrew/opt/binutils/bin
 HISTSIZE='128000'
 SAVEHIST='128000'
 HISTFILE=~/.zsh_history
@@ -56,15 +56,15 @@ alias s='git submodule sync && git submodule update'
 alias bspec='RUBYOPT=-W0 bundle exec rake spec'
 alias blint='RUBYOPT=-W0 bundle exec rake validate lint'
 alias brubo='RUBYOPT=-W0 bundle exec rake rubocop'
-alias bbeaker='RUBYOPT=-W0 BEAKER_set="docker/ubuntu-14.04" bundle exec rake beaker'
-alias bstrings='RUBYOPT=-W0 bundler exec puppet strings generate --format markdown'
 alias binstall='bundle config set --local path .bundle/vendor && bundle install'
 
 alias clipboard='xclip -selection c'
 alias cumin="ssh cumin1001.eqiad.wmnet sudo cumin"
 alias ip="ip -c"
 alias ca='git commit --amend --no-edit'
+#alias c='git commit'
 alias kubectl="minikube kubectl --"
+alias msync="bundle exec msync update -f"
 
 
 
@@ -93,7 +93,12 @@ function s_client {
 
 function c {
   date
-  git commit -m"$*" -a
+  if [ -z "$*" ]
+  then
+    git commit
+  else
+    git commit -m"$*"
+  fi
 }
 function check_production {
   BRANCH=$(git status | awk '{print $NF; exit}')
@@ -121,10 +126,10 @@ function rdns {
   printf '%s\tIN\tPTR\t%s\n' ${question%"${authority}"} $host
 }
 function docker-ubuntu {
-  docker run --rm -it ubuntu:${1} /bin/bash
+  docker run --rm -it arm64v8/ubuntu:${1} /bin/bash
 }
 function docker-debian {
-  docker run --rm -it debian:${1} /bin/bash
+  docker run --rm -it arm64v8/debian:${1} /bin/bash
 }
 function docker-killall {
   for i in $(docker ps --all | tail +2 | awk '{print $1}')
@@ -185,7 +190,10 @@ function ansible-role {
   ansible -b --module-name include_role --args name="${1}" "${2}" $3
 }
 
-fpath=(/usr/local/share/zsh-completions $fpath)
+function wombat_release {
+  curl -vvL -H "Accept: application/octet-stream" -H "Authorization: Bearer ${GITHUB_WOMBAT_TOKEN}" $1
+}
+fpath=(/opt/homebrew/share/zsh-completions $fpath)
 [[ -s '/etc/zsh_command_not_found' ]] && source '/etc/zsh_command_not_found'
 
 fpath=(~/.zsh/completion $fpath)
@@ -202,44 +210,52 @@ source ~/git/powerlevel10k/powerlevel10k.zsh-theme
 #   cmd="${cmd##*conf.}"
 #   type "${cmd}" >/dev/null 2>&1 && echo alias "${cmd}"="$( which grc ) --colour=auto ${cmd}"
 # done
-alias g++="/usr/local/bin/grc --colour=auto g++"
-alias head="/usr/local/bin/grc --colour=auto head"
-alias make="/usr/local/bin/grc --colour=auto make"
-alias ld="/usr/local/bin/grc --colour=auto ld"
-alias ping6="/usr/local/bin/grc --colour=auto ping6"
-alias tail="/usr/local/bin/grc --colour=auto tail"
-alias traceroute6="/usr/local/bin/grc --colour=auto traceroute6"
-alias curl="/usr/local/bin/grc --colour=auto curl"
-alias df="/usr/local/bin/grc --colour=auto df"
-alias diff="/usr/local/bin/grc --colour=auto diff"
-alias dig="/usr/local/bin/grc --colour=auto dig"
-alias du="/usr/local/bin/grc --colour=auto du"
-alias env="/usr/local/bin/grc --colour=auto env"
-alias fdisk="/usr/local/bin/grc --colour=auto fdisk"
-alias gcc="/usr/local/bin/grc --colour=auto gcc"
-alias id="/usr/local/bin/grc --colour=auto id"
-alias ifconfig="/usr/local/bin/grc --colour=auto ifconfig"
-alias ip="/usr/local/bin/grc --colour=auto ip"
-alias jobs="/usr/local/bin/grc --colour=auto jobs"
-alias kubectl="/usr/local/bin/grc --colour=auto kubectl"
-alias last="/usr/local/bin/grc --colour=auto last"
-alias log="/usr/local/bin/grc --colour=auto log"
-alias ls="/usr/local/bin/grc --colour=auto ls"
-alias lsof="/usr/local/bin/grc --colour=auto lsof"
-alias mount="/usr/local/bin/grc --colour=auto mount"
-alias netstat="/usr/local/bin/grc --colour=auto netstat"
-alias ping="/usr/local/bin/grc --colour=auto ping"
-alias ps="/usr/local/bin/grc --colour=auto ps"
-alias showmount="/usr/local/bin/grc --colour=auto showmount"
-alias stat="/usr/local/bin/grc --colour=auto stat"
-alias sysctl="/usr/local/bin/grc --colour=auto sysctl"
-alias tcpdump="/usr/local/bin/grc --colour=auto tcpdump"
-alias traceroute="/usr/local/bin/grc --colour=auto traceroute"
-alias ulimit="/usr/local/bin/grc --colour=auto ulimit"
-alias uptime="/usr/local/bin/grc --colour=auto uptime"
-alias whois="/usr/local/bin/grc --colour=auto whois"
-alias ssh=/usr/local/bin/ssh
+alias g++="/opt/homebrew/bin/grc --colour=auto g++"
+alias head="/opt/homebrew/bin/grc --colour=auto head"
+alias make="/opt/homebrew/bin/grc --colour=auto make"
+alias ld="/opt/homebrew/bin/grc --colour=auto ld"
+alias ping6="/opt/homebrew/bin/grc --colour=auto ping6"
+alias tail="/opt/homebrew/bin/grc --colour=auto tail"
+alias traceroute6="/opt/homebrew/bin/grc --colour=auto traceroute6"
+alias curl="/opt/homebrew/bin/grc --colour=auto curl"
+alias df="/opt/homebrew/bin/grc --colour=auto df"
+alias diff="/opt/homebrew/bin/grc --colour=auto diff"
+alias dig="/opt/homebrew/bin/grc --colour=auto dig"
+alias du="/opt/homebrew/bin/grc --colour=auto du"
+alias env="/opt/homebrew/bin/grc --colour=auto env"
+alias fdisk="/opt/homebrew/bin/grc --colour=auto fdisk"
+alias gcc="/opt/homebrew/bin/grc --colour=auto gcc"
+alias id="/opt/homebrew/bin/grc --colour=auto id"
+alias ifconfig="/opt/homebrew/bin/grc --colour=auto ifconfig"
+alias ip="/opt/homebrew/bin/grc --colour=auto ip"
+alias jobs="/opt/homebrew/bin/grc --colour=auto jobs"
+alias kubectl="/opt/homebrew/bin/grc --colour=auto kubectl"
+alias last="/opt/homebrew/bin/grc --colour=auto last"
+alias log="/opt/homebrew/bin/grc --colour=auto log"
+alias ls="/opt/homebrew/bin/grc --colour=auto ls"
+alias lsof="/opt/homebrew/bin/grc --colour=auto lsof"
+alias mount="/opt/homebrew/bin/grc --colour=auto mount"
+alias netstat="/opt/homebrew/bin/grc --colour=auto netstat"
+alias ping="/opt/homebrew/bin/grc --colour=auto ping"
+alias ps="/opt/homebrew/bin/grc --colour=auto ps"
+alias showmount="/opt/homebrew/bin/grc --colour=auto showmount"
+alias stat="/opt/homebrew/bin/grc --colour=auto stat"
+alias sysctl="/opt/homebrew/bin/grc --colour=auto sysctl"
+alias tcpdump="/opt/homebrew/bin/grc --colour=auto tcpdump"
+alias traceroute="/opt/homebrew/bin/grc --colour=auto traceroute"
+alias ulimit="/opt/homebrew/bin/grc --colour=auto ulimit"
+alias uptime="/opt/homebrew/bin/grc --colour=auto uptime"
+alias whois="/opt/homebrew/bin/grc --colour=auto whois"
+alias ssh=/opt/homebrew/bin/ssh
 eval "$(mise activate zsh)"
 
 # Amazon Q post block. Keep at the bottom of this file.
 # [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --no-rehash - zsh)"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/john.bond/.docker/completions $fpath)
+autoload -Uz compinit
+(( ${+_comps[docker]} )) || compinit
+# End of Docker CLI completions
